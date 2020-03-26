@@ -1,0 +1,49 @@
+
+service: phone-number
+frameworkVersion: "=1.67.0"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: dev
+  region: ap-southeast-2
+  tracing:
+    apiGateway: true
+    lambda: true
+  iamRoleStatements:
+    - Action:
+       - 'xray:PutTraceSegments'
+       - 'xray:PutTelemetryRecords'
+      Resource: '*'
+      Effect: 'Allow'
+
+functions:
+  getAllPhoneNumnbers:
+    handler: src/handlers/getAllPhoneNumbers.handler
+    iamRoleStatementsInherit: true
+    events:
+      - http:
+          path: phonenumbers/all
+          method: get
+  getCustomerPhoneNumbers:
+    handler: src/handlers/getCustomerPhoneNumbers.handler
+    iamRoleStatementsInherit: true
+    events:
+      - http:
+          path: phonenumbers/customer
+          method: post
+          request:
+            schema:
+              application/json: ${file(src/handlers/getCustomerPhoneNumbers-request-schema.json)}
+  activatePhoneNumber:
+    handler: src/handlers/activatePhoneNumber.handler
+    iamRoleStatementsInherit: true
+    events:
+      - http:
+          path: phonenumbers/activate
+          method: post
+          request:
+            schema:
+              application/json: ${file(src/handlers/activatePhoneNumber-request-schema.json)}
+
