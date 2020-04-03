@@ -1,5 +1,7 @@
 # Serverless challenge
 
+[![Serverless Challenge](https://circleci.com/gh/michiel/serverless-challenge.svg?style=svg)](https://circleci.com/gh/michiel/serverless-challenge)
+
 ## Notable features
 
  * Tracing enabled
